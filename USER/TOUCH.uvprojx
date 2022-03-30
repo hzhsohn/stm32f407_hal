@@ -334,7 +334,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F429xx</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\OBJ;..\USER;..\HALLIB\STM32F4xx_HAL_Driver\Inc;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\HARDWARE</IncludePath>
+              <IncludePath>..\CORE;..\OBJ;..\USER;..\HALLIB\STM32F4xx_HAL_Driver\Inc;..\SYSTEM\delay;..\SYSTEM\sys;..\HARDWARE</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -552,11 +552,6 @@
               <FileType>1</FileType>
               <FilePath>..\SYSTEM\sys\sys.c</FilePath>
             </File>
-            <File>
-              <FileName>usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\SYSTEM\usart\usart.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -581,6 +576,46 @@
               <FileName>24cxx.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\24CXX\24cxx.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\USART\usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>pwm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\PWM\pwm.c</FilePath>
+            </File>
+            <File>
+              <FileName>pwm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\HARDWARE\PWM\pwm.h</FilePath>
+            </File>
+            <File>
+              <FileName>usart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\HARDWARE\USART\usart.h</FilePath>
+            </File>
+            <File>
+              <FileName>led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\HARDWARE\LED\led.h</FilePath>
+            </File>
+            <File>
+              <FileName>key.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\HARDWARE\KEY\key.h</FilePath>
+            </File>
+            <File>
+              <FileName>myiic.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\HARDWARE\IIC\myiic.h</FilePath>
+            </File>
+            <File>
+              <FileName>24cxx.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\HARDWARE\24CXX\24cxx.h</FilePath>
             </File>
           </Files>
         </Group>
