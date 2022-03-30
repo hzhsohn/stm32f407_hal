@@ -1,21 +1,45 @@
 #include "sys.h"
-//////////////////////////////////////////////////////////////////////////////////	 
-//本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//ALIENTEK STM32F429开发板
-//系统时钟初始化	
-//包括时钟设置/中断管理/GPIO设置等
-//正点原子@ALIENTEK
-//技术论坛:www.openedv.com
-//创建日期:2016/1/5
-//版本：V1.0
-//版权所有，盗版必究。
-//Copyright(C) 广州市星翼电子科技有限公司 2014-2024
-//All rights reserved
-//********************************************************************************
-//修改说明
-//无
-////////////////////////////////////////////////////////////////////////////////// 
 
+
+void stm32f40x41x_Clock_Init(u32 plln,u32 pllm,u32 pllp,u32 pllq)
+{
+    HAL_StatusTypeDef ret = HAL_OK;
+    RCC_OscInitTypeDef RCC_OscInitStructure; 
+    RCC_ClkInitTypeDef RCC_ClkInitStructure;
+    
+    __HAL_RCC_PWR_CLK_ENABLE();
+    
+    __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+	
+    RCC_OscInitStructure.OscillatorType=RCC_OSCILLATORTYPE_HSE;
+    RCC_OscInitStructure.HSEState=RCC_HSE_ON;
+    RCC_OscInitStructure.PLL.PLLState=RCC_PLL_ON;
+    RCC_OscInitStructure.PLL.PLLSource=RCC_PLLSOURCE_HSE;
+    RCC_OscInitStructure.PLL.PLLM=pllm; 
+    RCC_OscInitStructure.PLL.PLLN=plln; 
+    RCC_OscInitStructure.PLL.PLLP=pllp; 
+    RCC_OscInitStructure.PLL.PLLQ=pllq; 
+    ret=HAL_RCC_OscConfig(&RCC_OscInitStructure);
+	
+    if(ret!=HAL_OK) while(1);
+    
+    RCC_ClkInitStructure.ClockType=(RCC_CLOCKTYPE_SYSCLK|RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2);
+    RCC_ClkInitStructure.SYSCLKSource=RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStructure.AHBCLKDivider=RCC_SYSCLK_DIV1;
+    RCC_ClkInitStructure.APB1CLKDivider=RCC_HCLK_DIV4;
+    RCC_ClkInitStructure.APB2CLKDivider=RCC_HCLK_DIV2;
+    ret=HAL_RCC_ClockConfig(&RCC_ClkInitStructure,FLASH_LATENCY_5);
+		
+    if(ret!=HAL_OK) while(1);
+
+	 //STM32F405x/407x/415x/417x
+	if (HAL_GetREVID() == 0x1001)
+	{
+		__HAL_FLASH_PREFETCH_BUFFER_ENABLE();
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////// 
 //时钟系统配置函数
 //Fvco=Fs*(plln/pllm);
 //SYSCLK=Fvco/pllp=Fs*(plln/(pllm*pllp));
@@ -35,7 +59,7 @@
 //     SYSCLK=360/2=180Mhz
 //     Fusb=360/8=45Mhz
 //返回值:0,成功;1,失败
-void Stm32_Clock_Init(u32 plln,u32 pllm,u32 pllp,u32 pllq)
+void Stm32f42x_Clock_Init(u32 plln,u32 pllm,u32 pllp,u32 pllq)
 {
     HAL_StatusTypeDef ret = HAL_OK;
     RCC_OscInitTypeDef RCC_OscInitStructure; 

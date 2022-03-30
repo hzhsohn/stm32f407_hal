@@ -2,21 +2,6 @@
 #define _SYS_H
 #include "stm32f4xx.h"
 
-//////////////////////////////////////////////////////////////////////////////////	 
-//本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//ALIENTEK STM32F429开发板
-//系统时钟初始化	
-//包括时钟设置/中断管理/GPIO设置等
-//正点原子@ALIENTEK
-//技术论坛:www.openedv.com
-//创建日期:2015/6/10
-//版本：V1.0
-//版权所有，盗版必究。
-//Copyright(C) 广州市星翼电子科技有限公司 2014-2024
-//All rights reserved
-//********************************************************************************
-//修改说明
-//无
 //////////////////////////////////////////////////////////////////////////////////  
 
 //0,不支持os
@@ -122,7 +107,10 @@ typedef __I uint8_t vuc8;
 #define PKout(n)   BIT_ADDR(GPIOK_ODR_Addr,n)  //输出 
 #define PKin(n)    BIT_ADDR(GPIOK_IDR_Addr,n)  //输入
 
-void Stm32_Clock_Init(u32 plln,u32 pllm,u32 pllp,u32 pllq);//时钟系统配置
+
+void stm32f40x41x_Clock_Init(u32 plln,u32 pllm,u32 pllp,u32 pllq);
+void Stm32f42x_Clock_Init(u32 plln,u32 pllm,u32 pllp,u32 pllq);
+
 //以下为汇编函数
 void WFI_SET(void);		//执行WFI指令
 void INTX_DISABLE(void);//关闭所有中断
