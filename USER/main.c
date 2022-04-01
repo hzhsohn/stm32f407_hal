@@ -1,12 +1,22 @@
+
+#include "stdint.h"
 #include "sys.h"
 #include "delay.h"
+#include "FreeRTOSLib.h"
 #include "USART/usart.h"
 #include "LED/led.h"
 #include "KEY/key.h"
 #include "PWM/pwm.h"
 
+//在freeRTOSConfig.h里面也要设置CPU频率 configCPU_CLOCK_HZ
 #define Stm32f407_Clock  		stm32f40x41x_Clock_Init(336,8,2,7)  	//168Mhz; 
-#define Stm32f429_Clock  		Stm32f42x_Clock_Init(384,25,2,8)  		//180Mhz; 
+#define Stm32f429_Clock  		Stm32f42x_Clock_Init(384,25,2,8)  		//192Mhz; 
+
+//一只狗
+IWDG_HandleTypeDef hiwdg;
+//任务句柄--
+TaskHandle_t hAppTask1; 
+TaskHandle_t hAppTask2; 
 
 //IO输出初始化
 typedef struct _IO_ADDR
@@ -57,15 +67,35 @@ void Motor_IOInit()
   }
 }
 
+
+void testTask( void *pvParameters )
+{
+	while(1)
+	{		
+		HAL_IWDG_Refresh(&hiwdg);
+		vTaskDelay(10/configTICK_RATE_HZ);
+	}
+}	
+
+void testTask2( void *pvParameters )
+{
+	while(1)
+	{
+		vTaskDelay(portTICK_PERIOD_MS);
+	}
+}	
+
+
 int main(void)
 {
-    HAL_Init();                     //初始化HAL库
-		Stm32f407_Clock;
-    delay_init(192);                //初始化延时函数
-    uart_init(115200);              //初始化USART
-    LED_Init();                     //初始化LED 
-    KEY_Init();                     //初始化按键
-		//delay_ms(1000);
+		Stm32f407_Clock;		
+    HAL_Init();                     								//初始化HAL库
+    delay_init(configCPU_CLOCK_HZ/1000000);         //初始化延时函数
+    uart_init(115200);              								//初始化USART
+    LED_Init();                     								//初始化LED 
+    KEY_Init();                     								//初始化按键
+	
+		delay_ms(1000);
 		
 		//Motor_IOInit();
 		
@@ -79,9 +109,14 @@ int main(void)
 		PWM_TIM3_Set(2000,50);
 		PWM_TIM4_Set(3000,50);
 		PWM_TIM9_Set(4000,50);
-	*/
-		while(1)
-		{
-				
-		}
+	*/	
+
+		//test 
+		xTaskCreate( testTask, "test", ( uint16_t ) configMINIMAL_STACK_SIZE*2, NULL, 1, &hAppTask1 );
+		xTaskCreate( testTask2, "test2", ( uint16_t ) configMINIMAL_STACK_SIZE*2, NULL, 2, &hAppTask2 );
+		
+		//hi狗来--
+		HAL_IWDG_Init(&hiwdg);
+		vTaskStartScheduler();
+		while(1);
 }

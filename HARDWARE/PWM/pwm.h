@@ -22,10 +22,10 @@ void PWM_TIM3_Set(int period,int pwmval);
 void PWM_TIM4_Set(int period,int pwmval);
 void PWM_TIM9_Set(int period,int pwmval);
 
-void PWM_TIM2_Stop();
-void PWM_TIM3_Stop();
-void PWM_TIM4_Stop();
-void PWM_TIM9_Stop();
+void PWM_TIM2_Stop(void);
+void PWM_TIM3_Stop(void);
+void PWM_TIM4_Stop(void);
+void PWM_TIM9_Stop(void);
 	
 #endif
 
