@@ -111,8 +111,7 @@ typedef __I uint8_t vuc8;
 #define PKin(n)    BIT_ADDR(GPIOK_IDR_Addr,n)  //输入
 
 
-void stm32f40x41x_Clock_Init(u32 plln,u32 pllm,u32 pllp,u32 pllq);
-void Stm32f42x_Clock_Init(u32 plln,u32 pllm,u32 pllp,u32 pllq);
+void Stm32f429_Clock_Init(u32 plln,u32 pllm,u32 pllp,u32 pllq);
 
 //以下为汇编函数
 void WFI_SET(void);		//执行WFI指令

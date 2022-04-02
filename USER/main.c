@@ -8,10 +8,6 @@
 #include "KEY/key.h"
 #include "PWM/pwm.h"
 
-//在freeRTOSConfig.h里面也要设置CPU频率 configCPU_CLOCK_HZ
-#define Stm32f407_Clock  		stm32f40x41x_Clock_Init(336,8,2,7)  	//168Mhz; 
-#define Stm32f429_Clock  		Stm32f42x_Clock_Init(384,25,2,8)  		//192Mhz; 
-
 //一只狗
 IWDG_HandleTypeDef hiwdg;
 //任务句柄--
@@ -25,21 +21,12 @@ typedef struct _IO_ADDR
   uint16_t      uPin;   //引脚编号
 }IO_ADDR;
 
-//电机控制GPIO定义
-#define MOTORC_ST		GPIO_PIN_0		//PG0--- 使能
-#define MOTORC_MD1  GPIO_PIN_1		//PG1---
-#define MOTORC_MD2  GPIO_PIN_2		//PG2
-#define MOTORC_MD3  GPIO_PIN_3		//PG3
-#define MOTORC_DR		GPIO_PIN_4		//PG4---方向
-#define MOTORC_STP  GPIO_PIN_3		//PB3---pwm
-
 IO_ADDR m_MotorGpio[] = {
   
-  {GPIOG,MOTORC_ST},//使能
-  {GPIOG,MOTORC_DR},//方向信号
-  {GPIOG,MOTORC_MD1},//细分1
-  {GPIOG,MOTORC_MD2},//细分2
-  {GPIOG,MOTORC_MD3},//细分3
+  {GPIOG,GPIO_PIN_0},//使能
+  {GPIOG,GPIO_PIN_1},//方向信号
+  {GPIOG,GPIO_PIN_2},//细分1
+  {GPIOG,GPIO_PIN_3},//细分2
   
 };
 
@@ -55,7 +42,7 @@ void Motor_IOInit()
   __HAL_RCC_GPIOD_CLK_ENABLE();  
 	
   //输出初始化
-  for(i = 0; i<20;i++)
+  for(i = 0; i<4;i++)
   {
     GPIO_Initure.Pin = m_MotorGpio[i].uPin;
     GPIO_Initure.Mode = GPIO_MODE_OUTPUT_PP;  //推挽输出模式
@@ -81,36 +68,24 @@ void testTask2( void *pvParameters )
 {
 	while(1)
 	{
-		vTaskDelay(portTICK_PERIOD_MS);
+		vTaskDelay(3000/configTICK_RATE_HZ);
 	}
 }	
 
 
 int main(void)
 {
-		Stm32f407_Clock;		
     HAL_Init();                     								//初始化HAL库
+		//在freeRTOSConfig.h里面也要设置CPU频率 configCPU_CLOCK_HZ
+		Stm32f429_Clock_Init(384,25,2,8);  							//192Mhz; 
     delay_init(configCPU_CLOCK_HZ/1000000);         //初始化延时函数
     uart_init(115200);              								//初始化USART
     LED_Init();                     								//初始化LED 
     KEY_Init();                     								//初始化按键
 	
-		delay_ms(1000);
+		//vTaskDelay(3000/configTICK_RATE_HZ);
+		//delay_ms(3000);
 		
-		//Motor_IOInit();
-		
-		/*
-	  PWM_TIM2_Init();
-		PWM_TIM3_Init();
-		PWM_TIM4_Init();
-		PWM_TIM9_Init();
-	
-	  PWM_TIM2_Set(1000,50);
-		PWM_TIM3_Set(2000,50);
-		PWM_TIM4_Set(3000,50);
-		PWM_TIM9_Set(4000,50);
-	*/	
-
 		//test 
 		xTaskCreate( testTask, "test", ( uint16_t ) configMINIMAL_STACK_SIZE*2, NULL, 1, &hAppTask1 );
 		xTaskCreate( testTask2, "test2", ( uint16_t ) configMINIMAL_STACK_SIZE*2, NULL, 2, &hAppTask2 );

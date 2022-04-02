@@ -28,6 +28,7 @@
 "..\obj\stm32f4xx_hal_flash_ex.o"
 "..\obj\stm32f4xx_hal_flash_ramfunc.o"
 "..\obj\stm32f4xx_hal_iwdg.o"
+"..\obj\stm32f4xx_ll_fsmc.o"
 "..\obj\delay.o"
 "..\obj\sys.o"
 "..\obj\led.o"

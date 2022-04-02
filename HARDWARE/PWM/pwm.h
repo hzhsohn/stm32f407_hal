@@ -7,9 +7,9 @@
 
 */
 
-//分频系数,168000000是主频
+//分频系数,192000000是主频
 #define PWM_TIM_CLOCK      (4000000)
-#define PWM_TIM_DIV     	 (168000000/PWM_TIM_CLOCK)
+#define PWM_TIM_DIV     	 (192000000/PWM_TIM_CLOCK)
 
 
 void PWM_TIM2_Init(void);
